@@ -1,0 +1,416 @@
+{
+    "info": {
+      "name": "LoL Ultimate Manager - Backend",
+      "_postman_id": "8fdb1f83-0000-4abc-9999-1234567890ab",
+      "description": "Colección de endpoints para probar el backend de LoL Ultimate Manager",
+      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+      {
+        "name": "Users",
+        "item": [
+          {
+            "name": "Register",
+            "request": {
+              "method": "POST",
+              "header": [
+                { "key": "Content-Type", "value": "application/json" }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n  \"username\": \"Prueba\",\n  \"email\": \"prueba@test.com\",\n  \"password\": \"1234\"\n}"
+              },
+              "url": {
+                "raw": "http://localhost:4000/users/register",
+                "protocol": "http",
+                "host": ["localhost"],
+                "port": "4000",
+                "path": ["users", "register"]
+              }
+            }
+          },
+          {
+            "name": "GetMe",
+            "request": {
+              "method": "GET",
+              "header": [
+                { "key": "Content-Type", "value": "application/json" },
+                { "key": "Authorization", "value": "Bearer {{token}}" }
+              ],
+              "url": {
+                "raw": "http://localhost:4000/users/me",
+                "protocol": "http",
+                "host": ["localhost"],
+                "port": "4000",
+                "path": ["users", "me"]
+              }
+            }
+          },
+          {
+            "name": "Login",
+            "request": {
+              "method": "POST",
+              "header": [
+                { "key": "Content-Type", "value": "application/json" }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n  \"email\": \"prueba@test.com\",\n  \"password\": \"1234\"\n}"
+              },
+              "url": {
+                "raw": "http://localhost:4000/users/login",
+                "protocol": "http",
+                "host": ["localhost"],
+                "port": "4000",
+                "path": ["users", "login"]
+              }
+            },
+            "event": [
+              {
+                "listen": "test",
+                "script": {
+                  "exec": [
+                    "const res = pm.response.json();",
+                    "if (res.token) {",
+                    "  pm.environment.set(\"token\", res.token);",
+                    "}"
+                  ],
+                  "type": "text/javascript"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Teams",
+        "item": [
+          {
+            "name": "Create Team",
+            "request": {
+              "method": "POST",
+              "header": [
+                { "key": "Content-Type", "value": "application/json" },
+                { "key": "Authorization", "value": "Bearer {{token}}" }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n  \"teamName\": \"Mi primer equipo\",\n  \"cardIds\": [1,2]\n}"
+              },
+              "url": {
+                "raw": "http://localhost:4000/teams",
+                "protocol": "http",
+                "host": ["localhost"],
+                "port": "4000",
+                "path": ["teams"]
+              }
+            }
+          },
+          {
+            "name": "Get My Teams",
+            "request": {
+              "method": "GET",
+              "header": [
+                { "key": "Authorization", "value": "Bearer {{token}}" }
+              ],
+              "url": {
+                "raw": "http://localhost:4000/teams",
+                "protocol": "http",
+                "host": ["localhost"],
+                "port": "4000",
+                "path": ["teams"]
+              }
+            }
+          },
+          {
+            "name": "Add Card to Team",
+            "request": {
+              "method": "POST",
+              "header": [
+                { "key": "Content-Type", "value": "application/json" },
+                { "key": "Authorization", "value": "Bearer {{token}}" }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n  \"teamId\": 1,\n  \"cardId\": 3\n}"
+              },
+              "url": {
+                "raw": "http://localhost:4000/teams/1/cards",
+                "protocol": "http",
+                "host": ["localhost"],
+                "port": "4000",
+                "path": ["teams", "1", "cards"]
+              }
+            }
+          },
+          {
+            "name": "Remove Card from Team",
+            "request": {
+              "method": "DELETE",
+              "header": [
+                { "key": "Authorization", "value": "Bearer {{token}}" }
+              ],
+              "url": {
+                "raw": "http://localhost:4000/teams/1/cards/3",
+                "protocol": "http",
+                "host": ["localhost"],
+                "port": "4000",
+                "path": ["teams", "1", "cards", "3"]
+              }
+            }
+          },
+          {
+            "name": "Get Team Roster",
+            "request": {
+              "method": "GET",
+              "header": [
+                { "key": "Authorization", "value": "Bearer {{token}}" }
+              ],
+              "url": {
+                "raw": "http://localhost:4000/teams/1/roster",
+                "protocol": "http",
+                "host": ["localhost"],
+                "port": "4000",
+                "path": ["teams", "1", "roster"]
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "Cards",
+        "item": [
+          {
+            "name": "Get My Cards (default sort=rating)",
+            "request": {
+              "method": "GET",
+              "header": [
+                { "key": "Authorization", "value": "Bearer {{token}}" }
+              ],
+              "url": {
+                "raw": "http://localhost:4000/cards/mine",
+                "protocol": "http",
+                "host": ["localhost"],
+                "port": "4000",
+                "path": ["cards", "mine"]
+              }
+            }
+          },
+          {
+            "name": "Get My Cards sorted by fitness",
+            "request": {
+              "method": "GET",
+              "header": [
+                { "key": "Authorization", "value": "Bearer {{token}}" }
+              ],
+              "url": {
+                "raw": "http://localhost:4000/cards/mine?sort=fitness",
+                "protocol": "http",
+                "host": ["localhost"],
+                "port": "4000",
+                "path": ["cards", "mine"],
+                "query": [
+                  { "key": "sort", "value": "fitness" }
+                ]
+              }
+            }
+          },
+          {
+            "name": "Get My Cards grouped by role",
+            "request": {
+              "method": "GET",
+              "header": [
+                { "key": "Authorization", "value": "Bearer {{token}}" }
+              ],
+              "url": {
+                "raw": "http://localhost:4000/cards/mine?group=role",
+                "protocol": "http",
+                "host": ["localhost"],
+                "port": "4000",
+                "path": ["cards", "mine"],
+                "query": [
+                  { "key": "group", "value": "role" }
+                ]
+              }
+            }
+          },
+          {
+            "name": "Get My Cards grouped by rarity and sorted by value",
+            "request": {
+              "method": "GET",
+              "header": [
+                { "key": "Authorization", "value": "Bearer {{token}}" }
+              ],
+              "url": {
+                "raw": "http://localhost:4000/cards/mine?group=rarity&sort=value",
+                "protocol": "http",
+                "host": ["localhost"],
+                "port": "4000",
+                "path": ["cards", "mine"],
+                "query": [
+                  { "key": "group", "value": "rarity" },
+                  { "key": "sort", "value": "value" }
+                ]
+              }
+            }
+          }
+        ]
+      },      
+      {
+        "name": "Market",
+        "item": [
+          {
+            "name": "List Card",
+            "request": {
+              "method": "POST",
+              "header": [
+                { "key": "Content-Type", "value": "application/json" },
+                { "key": "Authorization", "value": "Bearer {{token}}" }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n  \"cardId\": 5,\n  \"price\": 500\n}"
+              },
+              "url": {
+                "raw": "http://localhost:4000/market/list",
+                "protocol": "http",
+                "host": ["localhost"],
+                "port": "4000",
+                "path": ["market", "list"]
+              }
+            }
+          },
+          {
+            "name": "Get Market",
+            "request": {
+              "method": "GET",
+              "header": [
+                { "key": "Authorization", "value": "Bearer {{token}}" }
+              ],
+              "url": {
+                "raw": "http://localhost:4000/market",
+                "protocol": "http",
+                "host": ["localhost"],
+                "port": "4000",
+                "path": ["market"]
+              }
+            }
+          },
+          {
+            "name": "Buy Card",
+            "request": {
+              "method": "POST",
+              "header": [
+                { "key": "Authorization", "value": "Bearer {{token}}" }
+              ],
+              "url": {
+                "raw": "http://localhost:4000/market/buy/1",
+                "protocol": "http",
+                "host": ["localhost"],
+                "port": "4000",
+                "path": ["market", "buy", "1"]
+              }
+            }
+          },
+          {
+            "name": "Cancel Listing",
+            "request": {
+              "method": "POST",
+              "header": [
+                { "key": "Authorization", "value": "Bearer {{token}}" }
+              ],
+              "url": {
+                "raw": "http://localhost:4000/market/cancel/1",
+                "protocol": "http",
+                "host": ["localhost"],
+                "port": "4000",
+                "path": ["market", "cancel", "1"]
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "Matches",
+        "item": [
+          {
+            "name": "Play Match",
+            "request": {
+              "method": "POST",
+              "header": [
+                { "key": "Content-Type", "value": "application/json" },
+                { "key": "Authorization", "value": "Bearer {{token}}" }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n  \"teamId\": 1\n}"
+              },
+              "url": {
+                "raw": "http://localhost:4000/match/play",
+                "protocol": "http",
+                "host": ["localhost"],
+                "port": "4000",
+                "path": ["match", "play"]
+              }
+            }
+          },
+          {
+            "name": "Get My Matches",
+            "request": {
+              "method": "GET",
+              "header": [
+                { "key": "Authorization", "value": "Bearer {{token}}" }
+              ],
+              "url": {
+                "raw": "http://localhost:4000/match",
+                "protocol": "http",
+                "host": ["localhost"],
+                "port": "4000",
+                "path": ["match"]
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "Packs",
+        "item": [
+          {
+            "name": "Open Pack",
+            "request": {
+              "method": "POST",
+              "header": [
+                { "key": "Content-Type", "value": "application/json" },
+                { "key": "Authorization", "value": "Bearer {{token}}" }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n  \"size\": 3\n}"
+              },
+              "url": {
+                "raw": "http://localhost:4000/packs/open",
+                "protocol": "http",
+                "host": ["localhost"],
+                "port": "4000",
+                "path": ["packs", "open"]
+              }
+            }
+          },
+          {
+            "name": "Get Pack Prices",
+            "request": {
+              "method": "GET",
+              "url": {
+                "raw": "http://localhost:4000/packs/prices",
+                "protocol": "http",
+                "host": ["localhost"],
+                "port": "4000",
+                "path": ["packs", "prices"]
+              }
+            }
+          }
+        ]
+      }
+    ]
+  }
+  
