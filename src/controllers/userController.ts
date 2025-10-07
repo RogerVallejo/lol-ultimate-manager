@@ -161,3 +161,16 @@ export const getMe = async (req: Request, res: Response) => {
   }
 };
 
+export const resetPassword = async (req: Request, res: Response) => {
+  const { email, newPassword } = req.body;
+
+  const user = await userRepository.findOne({ where: { email } });
+  if (!user) return res.status(404).json({ message: "Usuario no encontrado" });
+
+  const hashed = await bcrypt.hash(newPassword, 10);
+  user.password = hashed;
+  await userRepository.save(user);
+
+  return res.json({ message: "Contraseña actualizada con éxito" });
+};
+

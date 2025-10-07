@@ -111,7 +111,7 @@ export const addCardToTeam = async (req: Request, res: Response) => {
     console.error(error);
     res.status(500).json({ message: "Error al añadir carta al equipo" });
   }
-};
+}; 
 
 
 // Quitar una carta de un equipo
